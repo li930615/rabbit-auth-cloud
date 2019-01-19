@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!--项目基础信息说明-->
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.rabbit.auth.cloud</groupId>
+    <artifactId>rabbit-auth-server</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>rabbit-auth-server</name>
+    <description>权限服务中心</description>
+
+    <!--依赖管理-->
+    <dependencies>
+        <!--SSO:登录权限核心组件-->
+        <dependency>
+            <groupId>com.rabbit.auth.cloud</groupId>
+            <artifactId>rabbit-auth-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!--rabbit-common公共组件-->
+        <dependency>
+            <groupId>com.rabbit.cloud</groupId>
+            <artifactId>rabbit-common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <!--Thymeleaf支持-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <version>1.5.15.RELEASE</version>
+        </dependency>
+        <!--提供XML解析-->
+        <dependency>
+            <groupId>net.sourceforge.nekohtml</groupId>
+            <artifactId>nekohtml</artifactId>
+            <version>1.9.22</version>
+        </dependency>
+    </dependencies>
+</project>
