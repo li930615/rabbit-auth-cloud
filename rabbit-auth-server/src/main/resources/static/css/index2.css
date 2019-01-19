@@ -1,0 +1,137 @@
+body{
+    background-image: url("../images/index2-bg.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
+}
+.logo{
+    width: 100%;
+    height: 90px;
+    padding-top: 45px;
+}
+.logo img{
+    margin-left: 150px;
+}
+.login-box{
+    width: 480px;
+    height: 550px;
+    background-color: rgba(255,255,255,0.3);
+    position: absolute;
+    top: 135px;
+    right: 170px;
+    border-radius: 5px;
+    text-align: center;
+}
+.login-box .user-icon{
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    margin: 50px auto 20px;
+    border: 3px solid rgba(255,255,255,0.8);
+    overflow: hidden;
+    text-align: center;
+    line-height: 120px;
+}
+.login-box input{
+    width: 315px;
+    height: 50px;
+    border: none;
+    background-color: rgba(255,255,255,0.7);
+    border-radius: 5px;
+    margin-top: 25px;
+    font-size: 14px;
+    padding-left: 20px;
+    outline: none;
+}
+.login-box input.inp-active{
+    background-color: white;
+}
+.login-box input::-webkit-input-placeholder { /* WebKit browsers */
+    color:#5d5c5c;
+}
+.login-box input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:#5d5c5c;
+}
+.login-box input::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #5d5c5c;
+}
+.login-box input:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:#5d5c5c;
+}
+
+
+.login-box input.inp-active::-webkit-input-placeholder { /* WebKit browsers */
+    color:black;
+}
+.login-box input.inp-active:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:black;
+}
+.login-box input.inp-active::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: black;
+}
+.login-box input.inp-active:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:black;
+}
+.login-box .pass-box{
+    width: 335px;
+    height: 30px;
+    margin: 20px auto 0;
+}
+.login-box .pass-box p{
+    display: block;
+    float: left;
+    font-size: 15px;
+    line-height: 30px;
+    height: 30px;
+    color: white;
+}
+.login-box .pass-box p i{
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid white;
+    border-radius: 3px;
+    vertical-align: middle;
+    float: left;
+    margin-top: 6px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+.login-box .pass-box p i.active{
+    background-image: url("../images/yes.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.login-box .pass-box a{
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    float: right;
+    font-size: 15px;
+    color: white;
+}
+.login-box button{
+    width: 335px;
+    height: 50px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #F36C5F;
+    margin-top: 30px;
+    color: white;
+    font-size: 16px;
+}
+.foot{
+    width: 100%;
+    height: 95px;
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    font-size: 14px;
+    color: #666666;
+    line-height: 95px;
+    text-align: center;
+}
+
