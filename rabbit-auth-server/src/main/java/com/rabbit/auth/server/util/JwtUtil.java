@@ -35,6 +35,7 @@ public class JwtUtil {
         return builder.compact();
     }
 
+    /*解析token中携带的信息获取认证信息*/
     public static Authorization getAuthorization(String token) {
         Claims claims = SecurityConst.parseJwt(token);
         if (claims != null) {
