@@ -49,6 +49,11 @@
         </dependencies>
     </dependencyManagement>
 
+    <modules>
+        <module>rabbit-auth-core</module>
+        <module>rabbit-auth-server</module>
+    </modules>
+
     <!--公共依赖-->
     <dependencies>
         <!--注册中心-->
@@ -71,6 +76,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>5.1.4.RELEASE</version>
         </dependency>
     </dependencies>
     <!--插件信息-->
