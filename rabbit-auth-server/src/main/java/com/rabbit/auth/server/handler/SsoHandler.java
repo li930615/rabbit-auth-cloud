@@ -218,7 +218,7 @@ public class SsoHandler {
         return verifySsoTokenServer(serverCode);
     }
 
-    private static boolean verifySsoTokenServer(String serverCode) {
+    public static boolean verifySsoTokenServer(String serverCode) {
         if (StringUtils.isBlank(serverCode)) {
             return false;
         }

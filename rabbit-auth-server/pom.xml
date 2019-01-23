@@ -3,19 +3,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <!--项目基础信息说明-->
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.rabbit.auth.cloud</groupId>
     <artifactId>rabbit-auth-server</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>rabbit-auth-server</name>
     <description>权限服务中心</description>
 
+    <parent>
+        <groupId>com.rabbit.auth.cloud</groupId>
+        <artifactId>rabbit-auth-cloud</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
     <!--依赖管理-->
     <dependencies>
-        <!--SSO:登录权限核心组件-->
+        <!--rabbit-feign-ucenter-->
         <dependency>
-            <groupId>com.rabbit.auth.cloud</groupId>
-            <artifactId>rabbit-auth-core</artifactId>
+            <groupId>com.rabbit.feign.cloud</groupId>
+            <artifactId>rabbit-feign-ucenter</artifactId>
             <version>1.0.0</version>
         </dependency>
         <!--rabbit-common公共组件-->
@@ -24,11 +29,16 @@
             <artifactId>rabbit-common</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!--SSO:登录权限核心组件-->
+        <dependency>
+            <groupId>com.rabbit.auth.cloud</groupId>
+            <artifactId>rabbit-auth-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <!--Thymeleaf支持-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
-            <version>1.5.15.RELEASE</version>
         </dependency>
         <!--提供XML解析-->
         <dependency>

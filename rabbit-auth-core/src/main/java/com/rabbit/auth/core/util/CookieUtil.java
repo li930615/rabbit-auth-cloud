@@ -31,6 +31,7 @@ public class CookieUtil {
         response.addCookie(cookie);
     }
 
+    /*从Cookie中获取认证信息token*/
     public static String getValue(HttpServletRequest request, String key) {
         Cookie cookie = get(request, key);
         if (cookie != null) {

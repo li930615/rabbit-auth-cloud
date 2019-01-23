@@ -1,0 +1,22 @@
+server:
+  context-path: /auth
+
+spring:
+  application:
+    name: rabbit-auth-server
+  profiles:
+    active: local
+  # 模板引擎
+  thymeleaf:
+    mode: LEGACYHTML5
+  mvc:
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/static/
+
+swaggerConfig:
+  parm:
+    authorization: false
+
+logging:
+  config: classpath:logback.xml
