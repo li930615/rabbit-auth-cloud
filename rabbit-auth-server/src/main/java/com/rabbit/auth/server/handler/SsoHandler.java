@@ -13,6 +13,7 @@ import com.rabbit.common.entity.CurrentUser;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ import java.util.concurrent.TimeUnit;
  **/
 public class SsoHandler {
 
+    @Autowired
     public static StringRedisTemplate stringRedisTemplate;
 
     private static Logger logger = LoggerFactory.getLogger(SsoHandler.class);
@@ -118,12 +120,14 @@ public class SsoHandler {
         return false;
     }
 
-    /*缓存登录服务码*/
+    /*缓存登录信息*/
     public static boolean saveServerCode(HttpServletResponse response, String serverCode, CurrentUser currentUser) {
         try {
             logger.info("new sso server code : {}", serverCode);
             //向redis里存入登录服务码和当前登录的用户并设置缓存时间
-            stringRedisTemplate.opsForValue().set(AuthServiceConst.SSO_SERVER_CODE(serverCode), JSON.toJSONString(currentUser), 86400L, TimeUnit.SECONDS);
+            System.out.println(AuthServiceConst.SSO_SERVER_CODE(serverCode));
+            System.out.println(JSON.toJSONString(currentUser));
+            stringRedisTemplate.opsForValue().set( AuthServiceConst.SSO_SERVER_CODE(serverCode), "AAAAA", 86400L, TimeUnit.SECONDS);
             //生成登录的token
             SsoToken ssoToken = new SsoToken("1", serverCode);
             //加入当前请求用户的信息

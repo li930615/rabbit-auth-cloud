@@ -7,12 +7,6 @@ spring:
   application:
     name: rabbit-auth-server
 
-# 配置中心公共配置
-config:
-  area: xian
-  company: XXXX单位 # 单位
-  copyright: XXXX版权 # 版权
-
 #-----------------------------------------------------------------------------------
 
 eureka:

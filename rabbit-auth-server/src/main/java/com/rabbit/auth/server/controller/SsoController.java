@@ -75,7 +75,7 @@ public class SsoController {
     public String login(Model model, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes)
     {
         logger.info("/sso/login...Get");
-        //去登录处理器中获取登录的token
+        //从请求中获取token以及重定向地址
         SsoToken ssoToken = SsoHandler.getSsoToken(request);
         String redirectUrl = request.getParameter("redirect_url");
         String clientId = request.getParameter("client_id");
@@ -111,7 +111,7 @@ public class SsoController {
     public String doLogin(Model model, String loginName, String password, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes)
     {
         logger.info("/sso/login...Post");
-
+        //从请求中获取token
         SsoToken ssoToken = SsoHandler.getSsoToken(request);
         if (null != ssoToken)
         {

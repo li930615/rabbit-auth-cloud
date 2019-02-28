@@ -1,5 +1,7 @@
 package com.rabbit.auth.server.config;
 
+import com.rabbit.auth.server.handler.ApiHandler;
+import com.rabbit.auth.server.handler.SsoHandler;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
@@ -27,10 +29,10 @@ public class RedisConfig implements InitializingBean {
     public static final int EXRP_DAY = 86400;
     public static final int EXRP_MONTH = 2592000;
 
-    @Autowired
     /*当你的redis数据库里面本来存的是字符串数据或者你要存取的数据就是字符串类型数据的时候，
       那么你就使用StringRedisTemplate即可。但是如果你的数据是复杂的对象类型，而取出的时候
       又不想做任何的数据转换，直接从Redis里面取出一个对象，那么使用RedisTemplate是更好的选择*/
+    @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
     @Bean
@@ -54,6 +56,7 @@ public class RedisConfig implements InitializingBean {
     }
 
     public void afterPropertiesSet() throws Exception {
-
+        SsoHandler.stringRedisTemplate = this.stringRedisTemplate;
+        ApiHandler.stringRedisTemplate = this.stringRedisTemplate;
     }
 }
