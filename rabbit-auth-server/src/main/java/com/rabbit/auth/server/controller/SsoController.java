@@ -7,7 +7,6 @@ import com.rabbit.auth.server.config.AuthConfig;
 import com.rabbit.auth.server.entity.sso.SsoToken;
 import com.rabbit.auth.server.handler.SsoHandler;
 import com.rabbit.common.entity.CurrentUser;
-import com.rabbit.common.util.DynamicObject;
 import com.rabbit.feign.ucenter.model.R;
 import com.rabbit.feign.ucenter.model.entity.SysApp;
 import com.rabbit.feign.ucenter.model.vo.SysUserVo;
@@ -21,8 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,57 +69,13 @@ public class SsoController {
         return "index";
     }
 
-//    @ApiOperation(value="获取用户信息", httpMethod="GET")
-//    @ApiImplicitParams({@io.swagger.annotations.ApiImplicitParam(name="Authorization", value="token", required=true, dataType="String", paramType="header")})
-//    @RequestMapping({"/sso/user"})
-//    public ResponseEntity<Object> user(Model model, HttpServletRequest request, HttpServletResponse response)
-//    {
-//        logger.info("/sso/user...");
-//        Map map = new HashMap();
-//
-//        SsoToken ssoToken = SsoHandler.getSsoToken(request);
-//        if (ssoToken == null) {
-//            map.put("message", "未提供认证信息或认证信息错误");
-//            return new ResponseEntity(map, HttpStatus.UNAUTHORIZED);
-//        }
-//
-//        if (!SsoHandler.verifySsoToken(ssoToken)) {
-//            map.put("message", "认证信息过期");
-//            return new ResponseEntity(map, HttpStatus.UNAUTHORIZED);
-//        }
-//
-//        SysUserVo userResult = this.sysUserServer.getSysUserVoById(ssoToken.getUser().getId());
-//        if (userResult == null) {
-//            map.put("message", "用户信息获取失败");
-//            return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
-//        }
-//        List<SysUserVo.App> appList = userResult.getAppList();
-//        StringBuffer sb = new StringBuffer();
-//        for (SysUserVo.App app : appList) {
-//            String id = app.getId();
-//            sb.append(id).append(",");
-//        }
-//        List<SysApp> sysAppList = this.sysAppServer.findAppByIds(String.valueOf(sb));
-//        if (sysAppList != null && sysAppList.size() > 0) {
-//            ArrayList appListNew = new ArrayList<Object>();
-//            for (SysUserVo.App app : appList) {
-//                for (SysApp sysApp : sysAppList) {
-//                    if (!app.getId().equals(sysApp.getId())) continue;
-//                    appListNew.add(DynamicObject.createBuilder(SysUserVo.App.class).setFieldValueInObject((Object)app).addFieldValue("iconFile", String.class, (Object)sysApp.getIconFile()).build());
-//                }
-//            }
-//            userResult.setAppList(appListNew);
-//        }
-//        return new ResponseEntity((Object)userResult, HttpStatus.OK);
-//    }
-
     @GetMapping({"/sso/login"})
     @ApiOperation("单点登录界面")
     @ApiImplicitParams({@io.swagger.annotations.ApiImplicitParam(name="redirect_url", value="重定项地址", required=true), @io.swagger.annotations.ApiImplicitParam(name="client_id", value="客户端ID", required=true)})
     public String login(Model model, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes)
     {
         logger.info("/sso/login...Get");
-
+        //去登录处理器中获取登录的token
         SsoToken ssoToken = SsoHandler.getSsoToken(request);
         String redirectUrl = request.getParameter("redirect_url");
         String clientId = request.getParameter("client_id");
@@ -146,6 +99,14 @@ public class SsoController {
         return "login";
     }
 
+    /**
+     * 功能描述：用户使用用户名、密码提交登录申请
+     * @author lizhiqiang
+     * @date  2019/2/15
+     * @param   loginName
+     * @param   password
+     * @return
+     **/
     @PostMapping({"/sso/login"})
     public String doLogin(Model model, String loginName, String password, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes)
     {
@@ -174,7 +135,7 @@ public class SsoController {
                 flag = false;
             }
         }
-        logger.info("loginName====" + loginName);
+        logger.info("loginName:" + loginName);
 
         R result = null;
         try
@@ -204,12 +165,14 @@ public class SsoController {
             return "redirect:/sso/login";
         }
 
-        SysUserVo data = (SysUserVo)new Gson().fromJson(JSON.toJSONString(result.getData()), SysUserVo.class);
-
+        /*登录成功后返回的R（消息相应体）并转换成json格式的数据*/
+        SysUserVo data = new Gson().fromJson(JSON.toJSONString(result.getData()), SysUserVo.class);
+        /*实例化一个当前用户对象*/
         CurrentUser currentUser = new CurrentUser();
+        /*放入登录用户的ID和账号*/
         currentUser.setId(data.getId());
         currentUser.setLoginName(data.getLoginName());
-
+        /*生成登录服务码并缓存*/
         String serverCode = UUID.randomUUID().toString();
         SsoHandler.saveServerCode(response, serverCode, currentUser);
 
@@ -222,50 +185,6 @@ public class SsoController {
         }
         model.addAttribute("loginName", currentUser.getLoginName());
         return "redirect:/sso";
-    }
-
-    @RequestMapping({"/sso/token"})
-    @ApiOperation(value="授权码换取token", httpMethod="POST")
-    @ApiImplicitParams({@io.swagger.annotations.ApiImplicitParam(name="code", value="授权码", required=true), @io.swagger.annotations.ApiImplicitParam(name="client_id", value="客户端ID", required=true), @io.swagger.annotations.ApiImplicitParam(name="client_secret", value="客户端密钥", required=true)})
-    public ResponseEntity<Map<String, Object>> ssoToken(String code, String client_id, String client_secret, String logoutPath, HttpServletRequest request, HttpServletResponse response)
-    {
-        Map map = new HashMap();
-        logger.info("/sso/token");
-
-        if (StringUtils.isBlank(client_id)) {
-            map.put("error", "Bad Request");
-            map.put("message", "client_id为空");
-            return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
-        }
-        String token = SsoHandler.getClientToken(client_id, code);
-        logger.info("sso client [{}] auth token [{}] by code ", new Object[] { client_id, token, code });
-        boolean flag = false;
-        SysApp sysApp = this.sysAppServer.getByCode(client_id);
-        if (sysApp != null) {
-            String secret = sysApp.getSecret();
-            if ((StringUtils.isNotBlank(secret)) && (secret.equals(client_secret))) {
-                flag = true;
-            }
-        }
-
-        if ((StringUtils.isNotBlank(token)) && (flag)) {
-            map.put("access_token", token);
-            map.put("code", code);
-            return new ResponseEntity(map, HttpStatus.OK);
-        }
-        map.put("error", "Bad Request");
-        map.put("message", "token获取失败");
-        return new ResponseEntity(map, HttpStatus.BAD_REQUEST);
-    }
-
-    public String redirectClient(String clientId, String redirectUrl, String serverCode, RedirectAttributes redirectAttributes)
-    {
-        logger.info("重定向客户端页面");
-
-        String code = SsoHandler.getClientCode(clientId, serverCode);
-        redirectAttributes.addAttribute("code", code);
-
-        return "redirect:" + redirectUrl;
     }
 
     @RequestMapping({"/sso/logout"})
@@ -311,5 +230,15 @@ public class SsoController {
             return new R("success");
         }
         return new R(new Exception());
+    }
+
+    public String redirectClient(String clientId, String redirectUrl, String serverCode, RedirectAttributes redirectAttributes)
+    {
+        logger.info("重定向客户端页面");
+
+        String code = SsoHandler.getClientCode(clientId, serverCode);
+        redirectAttributes.addAttribute("code", code);
+
+        return "redirect:" + redirectUrl;
     }
 }

@@ -1,0 +1,27 @@
+#_配置项目端口
+server:
+  port: 9010
+  context-path: /auth
+
+spring:
+  application:
+    name: rabbit-auth-server
+
+# 配置中心公共配置
+config:
+  area: xian
+  company: XXXX单位 # 单位
+  copyright: XXXX版权 # 版权
+
+#-----------------------------------------------------------------------------------
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    lease-renewal-interval-in-seconds: 5 #eureka client发送心跳给server端的频率，默认30秒
+    lease-expiration-duration-in-seconds: 20 #eureka server至上一次收到client的心跳之后，等待下一次心跳的超时时间，默认为90秒(该值至少应该大于leaseRenewalIntervalInSeconds)
+  client:
+    serviceUrl:
+      defaultZone: http://rabbit:rabbit@127.0.0.1:9300/eureka
+    registry-fetch-interval-seconds: 10 #eureka client间隔多久去拉取服务注册信息，默认为30秒；如果要迅速获取服务注册状态，可以缩小该值

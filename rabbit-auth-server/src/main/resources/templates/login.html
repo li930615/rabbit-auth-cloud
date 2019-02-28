@@ -2,54 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>统一认证平台登录</title>
+    <title>Welcome to login page~</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <link rel="shortcut icon" th:href="@{/static/images/favicon.png}" type="image/png">
-    <link rel="stylesheet" th:href="@{/static/css/reset.css}">
-    <link rel="stylesheet" th:href="@{/static/css/index2.css}">
-    <script type="text/javascript" th:src="@{/static/js/jquery-1.11.1.min.js}"></script>
-    <script type="text/javascript" th:src="@{/static/js/layer/layer.js}"></script>
-    <script type="text/javascript" th:src="@{/static/js/domlastic.js}"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            domLastic.init({
-                itemsClassnameToConnect: 'item',
-                animationDirection: 'vertical'
-            });
-            domLastic.animateItems();
-
-        });
-    </script>
-    <style type="text/css">
-        .passstyle {
-            display: block;
-            min-height: 15px;
-            height: auto;
-            _height: 14px;
-            padding: 18px 0 2px;
-            line-height: 14px;
-            font-size: 14.7px;
-            color: #fc4343;
-            text-align: left;
-            margin-left: 80px;
-        }
-
-    </style>
 </head>
 <body>
-<div class="logo" th:if="${area eq 'huangchuan'}">
-    <img th:src="@{/static/images/huangchuan/logo.png}" alt="">
-    <span style="line-height: 90px;font-weight: 100; display:inline-block;vertical-align: top;font-size: 1.5em;font-family:'微软雅黑','黑体','宋体';color: white;">&nbsp;潢川县政务统一登录平台</span>
-</div>
-<div class="login-box">
     <form method="post" id="fm1" th:action="@{/sso/login}">
         <input type="hidden" name="redirect_url" th:value="${redirect_url}">
         <input type="hidden" name="client_id" th:value="${client_id}">
         <input type="hidden" name="server" th:value="${server}">
-        <div class="user-icon">
-            <img th:src="@{/static/images/Photo2.png}" alt="">
-        </div>
         <input type="text" id="loginName" name="loginName" th:value="${loginName}"
                th:placeholder="请输入用户名..."/>
         <input type="password" id="password" name="password" th:value="${password}"
@@ -64,33 +26,7 @@
             <!--登陆按钮-->
             <button id="submit" name="submit" accesskey="l">登录</button>
         </section>
-        <!--2小时免登陆-->
-        <!-- <input type="checkbox" title="2小时免登陆" style="width:20px;height:20px" name="rememberMe" id="rememberMe" value="true" /> <label title="2小时免登陆" for="rememberMe">&nbsp;记住我 免登陆</label>-->
     </form>
 </div>
-<div class="foot">
-    主办单位：<span th:text="${company} + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Copyright@ ' + ${copyright}"/>
-</div>
 </body>
-<script th:inline="javascript">
-    /*<![CDATA[*/
-    $(".remember").click(function () {
-        $(this).toggleClass("active");
-    });
-    $("input").focus(function () {
-        $(this).addClass("inp-active").siblings().removeClass("inp-active");
-    });
-    $("input").blur(function () {
-        $(this).removeClass("inp-active");
-    });
-    $(document).ready(function () {
-        var errorMsg = $("#errorMsg span:first-child").text();
-        if (errorMsg != '') {
-            layer.msg(errorMsg);
-        }
-        $("#loginName").focus();
-    });
-    $("#submit").submit();
-    /*]]>*/
-</script>
 </html>

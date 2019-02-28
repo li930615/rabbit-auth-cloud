@@ -15,6 +15,9 @@ public class CookieUtil {
     private static final int COOKIE_MAX_AGE = 3600;//cookie有效时间
     private static final String COOKIE_PATH = "/";
 
+    /*给请求的响应中的cookie放入信息：并设置过期时间（正数代表cookie的过期时间，负数表示该Cookie仅在本浏览器窗口以及本窗口打开的子窗口内有效
+    ，关闭窗口后该Cookie即失效。为0表示表示删除该Cookie。Cookie机制没有提供删除Cookie的方法，因此通过设置该Cookie即时失效实现删除Cookie的效果。
+    失效的Cookie会被浏览器从Cookie文件或者内存中删除）*/
     public static void set(HttpServletResponse response, String key, String value, boolean ifRemember) {
         int age = ifRemember ? 3600 : -1;
         set(response, key, value, null, "/", age, true);

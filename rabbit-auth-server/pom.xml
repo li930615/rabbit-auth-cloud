@@ -15,6 +15,10 @@
         <version>1.0.0</version>
     </parent>
 
+    <properties>
+        <jwt_version>0.6.0</jwt_version>
+    </properties>
+
     <!--依赖管理-->
     <dependencies>
         <!--rabbit-feign-ucenter-->
@@ -22,6 +26,10 @@
             <groupId>com.rabbit.feign.cloud</groupId>
             <artifactId>rabbit-feign-ucenter</artifactId>
             <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <!--rabbit-common公共组件-->
         <dependency>
@@ -34,11 +42,6 @@
             <groupId>com.rabbit.auth.cloud</groupId>
             <artifactId>rabbit-auth-core</artifactId>
             <version>1.0.0</version>
-        </dependency>
-        <!--Thymeleaf支持-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <!--提供XML解析-->
         <dependency>

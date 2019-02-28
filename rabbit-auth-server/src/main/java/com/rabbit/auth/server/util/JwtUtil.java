@@ -37,7 +37,7 @@ public class JwtUtil {
 
     /*解析token中携带的信息获取认证信息*/
     public static Authorization getAuthorization(String token) {
-        Claims claims = SecurityConst.parseJwt(token);
+        Claims claims = SecurityConst.parseJWT(token);
         if (claims != null) {
             AuthType authType = new Gson().fromJson(claims.get("auth_type").toString(), AuthType.class);
             Object object = claims.get("auth_token");
